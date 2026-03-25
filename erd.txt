@@ -1,0 +1,69 @@
+user
+    id
+    first_name  
+    last_name [Optional]
+    image     [Optional]
+    username
+    password_hash
+    created_at
+    last_login
+
+user_information
+    id
+    user_id     [FK user]
+    birth_date
+    bio
+
+Tag
+    id
+    name [Lower]
+
+user_interest
+    id
+    user_id [FK user]
+    tag_id  [FK tags]
+    created_at
+
+post
+    id
+    user_id [FK user]
+    title
+    description
+
+post_tags
+    id
+    post_id [FK post]
+    tag_id  [FK tags]
+
+post_images
+    id
+    post_id [FK post]
+    image   [Pillow]
+
+
+post_likes
+    id
+    post_id [FK post]
+    user_id [FK user]
+    like [1 0]
+
+post_comments
+    id
+    reply   [post_comments]
+    post_id [FK post]
+    user_id [FK user]
+    text
+
+user_bookmarks
+    id
+    user_id [FK user]
+    post_id [FK post]
+    created_at
+
+followers
+    id
+    user_id        [FK user]
+    follower_id    [FK user]
+    blocked_date    [Optional]
+    created_at
+
