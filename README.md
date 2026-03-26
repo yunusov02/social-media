@@ -105,3 +105,39 @@ q.choice_set.create(text='something')
 
 ### Use generice views: Less code is better
 
+## Tests
+
+Tests are routines that check the operation of your code
+
+Testing operate at different levels.
+
+
+### Test-Driven Development (TDD)
+
+Test-Driven Development where first you write the test before implentation of your code
+
+### Testing views
+
+`setup_test_environment()` installs a template renderer which will allow us to examine some additional attributes on responses such as **response.context** that otherwise woudn't be available
+
+
+```python
+>>> from django.test.utils import setup_test_environment
+>>> setup_test_environment()
+>>> from django.test import Client
+>>> client = Client()
+>>> response = client.get("/")
+Not Found: /
+>>> response.status_code
+404
+>>> from django.urls import reverse
+>>> response = client.get(reverse("polls:index"))
+>>> response.status_code
+200
+>>> response.content
+b'\n    <ul>\n    \n        <!-- <li><a href="/polls/2/">THats next Question</a></li> -->\n        <li><a href="/polls/2/">THats next Question</a></li>\n    \n        <!-- <li><a href="/polls/1/">Whats new</a></li> -->\n        <li><a href="/polls/1/">Whats new</a></li>\n    \n    </ul>\n'
+>>> response.context['latest_question_list']
+<QuerySet [THats next Question, Whats new]>
+>>> 
+
+```
