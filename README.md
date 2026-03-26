@@ -67,3 +67,41 @@ python manage.py migrate
 python manage.py sqlmigrate app_name 001 # print sql command implemented
 python manage.py shell # to go shell
 ```
+
+`migrate` command looks at the INSTALLED_APPS settings and creates any necessary database tables according to the database 
+
+```shell
+# To see all database tables
+\dt # PostgreSQL
+.tables # SQLite
+select table_name from user_tables; # Oracle
+```
+
+### Playing with django shell
+
+`modelname_set` or `choice_set` is a reverse relation manager that Django automatically creates on the one side of a Foreign Key relationship
+
+```
+<model_name_lowercase>_set
+```
+
+```python
+# Choice has: question = models.ForeignKey(Question, on_delete=models.CASCADE)
+# Django automatically creates: Question.choice_set → manages related Choice objects
+
+q = Question.objects.get(id=1)
+
+# This works ✅ — because choice_set is tied to the Choice model
+q.choice_set.create(choice_text='Option A', votes=0)
+
+# This does NOT work ❌ — text is a field on TestModel, not Choice
+q.choice_set.create(text='something')
+```
+
+### Views is responsible for doing of two things 
+* `HttpResponse`
+* `Htpp404`
+
+
+### Use generice views: Less code is better
+

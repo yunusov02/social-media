@@ -14,6 +14,13 @@ class Question(models.Model):
 
     def __repr__(self):
         return self.question_text[:50]
+    
+    def __str__(self):
+        return self.question_text[:50]
+    
+    class Meta:
+        db_table = 'question'
+        ordering = ['-pub_date']
 
 
 class Choice(models.Model):
@@ -25,7 +32,21 @@ class Choice(models.Model):
         return self.choice_text[:50]
     
 
+    def __str__(self):
+        return self.choice_text[:50]
+    
+
+    class Meta:
+        db_table = 'choice'
+        ordering = ['votes']
 
 
 
+class TestModel(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    text = models.CharField(max_length=255)
 
+
+    def __repr__(self):
+        return self.text[:50]
+    
