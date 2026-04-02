@@ -31,6 +31,13 @@ class DetailView(generic.DetailView):
     model = Question
     template_name = "polls/detail.html"
 
+    def get_queryset(self):
+        """
+        Excludes any questions that aren't published yet
+        """
+
+        return Question.objects.filter(pub_date__lte=timezone.now())    
+
 
 class ResultsView(generic.DetailView):
     model = Question
@@ -71,8 +78,8 @@ def results(request: HttpRequest, question_id):
     question = get_object_or_404(Question, pk=question_id)
     return render(request, "polls/results.html", {"question": question})
 
-    response = "You are looking at the results of question %s"
-    return HttpResponse(response % question_id)
+    # response = "You are looking at the results of question %s"
+    # return HttpResponse(response % question_id)
 
 
 def vote(request: HttpRequest, question_id):
@@ -99,10 +106,7 @@ def vote(request: HttpRequest, question_id):
 
         return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
 
-
-
-
-    return HttpResponse("You are voting on question %s" % question_id)
+    # return HttpResponse("You are voting on question %s" % question_id)
 
 
 
