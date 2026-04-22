@@ -25,6 +25,8 @@ INSTALLED_APPS = [
 
     # Third part libraries
     'rest_framework',
+    'drf_spectacular',
+    # 'drf_spectacular_sidecar',
 
 
     # Apps
@@ -34,6 +36,13 @@ INSTALLED_APPS = [
     'apps.chats',
     'apps.social_groups'
 ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 20,
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
