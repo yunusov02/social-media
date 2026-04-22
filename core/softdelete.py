@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import BaseUserManager
 
 
 
@@ -49,7 +50,26 @@ class SoftDeleteManager(models.Manager):
     def deleted(self):
         return SoftDeleteQuerySet(self.model, using=self._db).filter(is_deleted=True)
 
+class SoftDeleteUserManager(BaseUserManager):
+    def get_queryset(self):
+        return SoftDeleteQuerySet(self.model, using=self._db).filter(is_deleted=False)
 
+    def deleted(self):
+        return SoftDeleteQuerySet(self.model, using=self._db).filter(is_deleted=True)
+
+    def create_user(self, username, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError("The Email field must be set")
+        email = self.normalize_email(email)
+        user = self.model(username=username, email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, username, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        return self.create_user(username, email, password, **extra_fields)
 
 
 

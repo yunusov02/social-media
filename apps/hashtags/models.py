@@ -11,7 +11,7 @@ class Hashtags(SoftDeleteModel):
     objects = SoftDeleteManager()
     all_objects = models.Manager()
 
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
@@ -23,4 +23,11 @@ class Hashtags(SoftDeleteModel):
 
         verbose_name = 'Hashtag'
         verbose_name_plural = 'Hashtags'
-        
+
+        constraints = [
+            models.UniqueConstraint(
+                fields=['name'], 
+                name='unique_hashtag_name',
+                condition=models.Q(is_deleted=False)
+            )
+        ]  
