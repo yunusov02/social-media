@@ -8,6 +8,7 @@ from drf_spectacular.views import (
 )
 
 from apps.hashtags.urls import hashtag_router
+from apps.posts.urls import post_router
 
 
 
@@ -16,6 +17,10 @@ api_router = routers.DefaultRouter()
 
 api_router.registry.extend(
     hashtag_router.registry
+)
+
+api_router.registry.extend(
+    post_router.registry
 )
 
 urlpatterns = [
